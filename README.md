@@ -1,16 +1,9 @@
 # imdb
 
-A new Flutter project.
+A DBMS Project
 
-## Getting Started
+Creating an App to create movie watch list and watched-list to display the use of SQL database
 
-This project is a starting point for a Flutter application.
+Would most likely use MySQL. Can switch to PostgreSQL or SQFLite
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Need to decide on Design of the app and database.
