@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:imdb/screens/home.dart';
+import 'package:imdb/screens/main_screen.dart';
 import 'screens/welcome.dart';
-import 'screens/login.dart';
-import 'screens/signup.dart';
+import 'auth/login.dart';
+import 'auth/signup.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           WelcomeScreen.id: (context) => const WelcomeScreen(),
           LoginScreen.id: (context) => const LoginScreen(),
           SignUpScreen.id: (context) => const SignUpScreen(),
-          HomeScreen.id: (context) => const HomeScreen(),
+          MainScreen.id: (context) => const MainScreen(),
         });
   }
 }

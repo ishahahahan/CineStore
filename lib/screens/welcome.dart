@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
-import 'signup.dart';
+import '../auth/login.dart';
+import '../auth/signup.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -39,7 +39,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                   fixedSize: MaterialStateProperty.all(const Size(200, 50)),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, LoginScreen.id);
+                  Navigator.pushReplacementNamed(context, LoginScreen.id);
                 },
                 child: const Text('Sign In',
                     style: TextStyle(color: Colors.white)),
@@ -50,7 +50,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                   fixedSize: MaterialStateProperty.all(const Size(200, 50)),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, SignUpScreen.id);
+                  Navigator.pushReplacementNamed(context, SignUpScreen.id);
                 },
                 child: const Text('Sign Up',
                     style: TextStyle(color: Colors.white)),

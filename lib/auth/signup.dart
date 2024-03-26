@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
+import '../screens/main_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -122,12 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     confirmPassword.isNotEmpty;
 
                 if (password == confirmPassword && notEmpty) {
-                  print('First Name: $firstName');
-                  print('Last Name: $lastName');
-                  print('Age: $age');
-                  print('Email: $email');
-                  print('Password: $password');
-                  Navigator.pushNamed(context, HomeScreen.id);
+                  Navigator.pushReplacementNamed(context, MainScreen.id);
                 }
               },
               child:
