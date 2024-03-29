@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import '../bottom_nav_bar_screens/bookmarks.dart';
+import '../bottom_nav_bar_screens/home.dart';
+import '../bottom_nav_bar_screens/search.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
-  static const String id = '/home';
+  static const String id = '/main';
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -12,6 +15,12 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   var _currentIndex = 0;
+
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const SearchScreen(),
+    const BookmarksScreen()
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -58,22 +67,9 @@ class _MainScreenState extends State<MainScreen> {
               title: const Text('Bookmarks'),
               selectedColor: const Color(0xff4055C6),
             ),
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              selectedColor: const Color(0xff4055C6),
-            ),
           ],
         ),
-        body: const Center(
-          child: Text(
-            'Welcome to IMDb!',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        body: _screens[_currentIndex],
       ),
     );
   }

@@ -42,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const Padding(
             padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
             child: TextField(
+              obscureText: true,
               decoration: InputDecoration(
                 hintText: 'Password',
                 labelText: 'Password',
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     MaterialStateProperty.all(const Color(0xff4055C6)),
               ),
               onPressed: () {
-                Navigator.pushReplacementNamed(context, MainScreen.id);
+                Navigator.popAndPushNamed(context, MainScreen.id);
               },
               child: const Text('LOGIN'),
             ),

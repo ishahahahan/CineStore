@@ -39,7 +39,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                   fixedSize: MaterialStateProperty.all(const Size(200, 50)),
                 ),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, LoginScreen.id);
+                  Navigator.pushNamed(context, LoginScreen.id);
                 },
                 child: const Text('Sign In',
                     style: TextStyle(color: Colors.white)),
@@ -50,7 +50,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                   fixedSize: MaterialStateProperty.all(const Size(200, 50)),
                 ),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, SignUpScreen.id);
+                  Navigator.pushNamed(context, SignUpScreen.id);
                 },
                 child: const Text('Sign Up',
                     style: TextStyle(color: Colors.white)),
