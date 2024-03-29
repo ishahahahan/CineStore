@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import '../auth/login.dart';
-import '../auth/signup.dart';
+import '../main.dart';
+import '../screens/main_screen.dart';
+import 'login.dart';
+import 'signup.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -12,6 +14,21 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _redirect();
+  }
+
+  Future<void> _redirect() async {
+    await Future.delayed(Duration.zero);
+
+    final session = supabase.auth.currentSession;
+    if (session != null) {
+      Navigator.pushReplacementNamed(context, MainScreen.id);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
