@@ -9,10 +9,10 @@ class SignUpScreen extends StatefulWidget {
   static const String id = '/signup';
 
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  SignUpScreenState createState() => SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class SignUpScreenState extends State<SignUpScreen> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _ageController = TextEditingController();
@@ -156,8 +156,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   );
 
-                  if (response.user == null) {
-                    return;
+                  final Session? session = response.session;
+                  final User? user = response.user;
+
+                  if (session == null || user == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Check your email for verification"),
+                      ),
+                    );
                   } else {
                     Navigator.pushReplacementNamed(context, MainScreen.id);
                   }

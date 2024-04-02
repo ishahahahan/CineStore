@@ -9,10 +9,10 @@ class LoginScreen extends StatefulWidget {
   static const String id = '/login';
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -100,7 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     );
                   } else {
-                    Navigator.pushReplacementNamed(context, MainScreen.id);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, MainScreen.id, (route) => false);
                   }
                 } on AuthException catch (e) {
                   // Handle specific authentication exceptions
