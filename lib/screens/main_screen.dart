@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:imdb/auth/welcome.dart';
+import 'package:imdb/main.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import '../bottom_nav_bar_screens/bookmarks.dart';
 import '../bottom_nav_bar_screens/home.dart';
@@ -10,10 +12,10 @@ class MainScreen extends StatefulWidget {
   static const String id = '/main';
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  MainScreenState createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> {
   var _currentIndex = 0;
 
   final List<Widget> _screens = [
@@ -38,12 +40,17 @@ class _MainScreenState extends State<MainScreen> {
             'IMDb',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
-          actions: const [
+          actions: [
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: IconButton(
-                onPressed: null,
-                icon: Icon(Icons.account_circle, size: 35),
+                onPressed: () async {
+                  // Sign Out
+                  await supabase.auth.signOut();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, WelcomeScreen.id, (route) => false);
+                },
+                icon: const Icon(Icons.account_circle, size: 35),
               ),
             ),
           ],

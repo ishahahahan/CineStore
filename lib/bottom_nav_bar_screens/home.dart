@@ -10,6 +10,7 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   String _bodyText = "";
+  String _selectedButton = 'Recently Added';
 
   @override
   Widget build(BuildContext context) {
@@ -23,32 +24,53 @@ class HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
+                  style: _selectedButton == 'Recently Added'
+                      ? ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white70)
+                      : null,
                   onPressed: () => setState(() {
                     _bodyText = "Recently Added";
+                    _selectedButton = 'Recently Added';
                   }),
-                  child: const Text(
+                  child: Text(
                     'Recently Added',
-                    style: TextStyle(color: Colors.white70),
+                    style: _selectedButton == 'Recently Added'
+                        ? const TextStyle(color: Colors.black)
+                        : const TextStyle(color: Colors.white70),
                   ),
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
+                  style: _selectedButton == 'Popular'
+                      ? ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white70)
+                      : null,
                   onPressed: () => setState(() {
                     _bodyText = "Popular";
+                    _selectedButton = 'Popular';
                   }),
-                  child: const Text(
+                  child: Text(
                     'Popular',
-                    style: TextStyle(color: Colors.white70),
+                    style: _selectedButton == 'Popular'
+                        ? const TextStyle(color: Colors.black)
+                        : const TextStyle(color: Colors.white70),
                   ),
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
+                  style: _selectedButton == 'Top Rated'
+                      ? ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white70)
+                      : null,
                   onPressed: () => setState(() {
                     _bodyText = "Top Rated";
+                    _selectedButton = 'Top Rated';
                   }),
-                  child: const Text(
+                  child: Text(
                     'Top Rated',
-                    style: TextStyle(color: Colors.white70),
+                    style: _selectedButton == 'Top Rated'
+                        ? const TextStyle(color: Colors.black)
+                        : const TextStyle(color: Colors.white70),
                   ),
                 ),
               ],

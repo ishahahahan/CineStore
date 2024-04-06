@@ -4,10 +4,10 @@ class BookmarksScreen extends StatefulWidget {
   const BookmarksScreen({super.key});
 
   @override
-  _BookmarksScreenState createState() => _BookmarksScreenState();
+  BookmarksScreenState createState() => BookmarksScreenState();
 }
 
-class _BookmarksScreenState extends State<BookmarksScreen> {
+class BookmarksScreenState extends State<BookmarksScreen> {
   @override
   Widget build(BuildContext context) {
     return const SafeArea(
