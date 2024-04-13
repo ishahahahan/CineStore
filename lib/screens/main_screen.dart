@@ -71,7 +71,7 @@ class MainScreenState extends State<MainScreen> {
             ),
             SalomonBottomBarItem(
               icon: const Icon(Icons.bookmark),
-              title: const Text('Bookmarks'),
+              title: const Text('Watchlist'),
               selectedColor: const Color(0xff4055C6),
             ),
           ],

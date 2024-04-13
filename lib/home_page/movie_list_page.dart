@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import '../screens/movie_details.dart';
 
-class HomePage extends StatefulWidget {
-  final String? title;
-  const HomePage({super.key, this.title});
+class MovieListPage extends StatefulWidget {
+  // final String? title;
+  const MovieListPage({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
+  MovieListPageState createState() => MovieListPageState();
 }
 
-class HomePageState extends State<HomePage> {
+class MovieListPageState extends State<MovieListPage> {
   final titles = [
     'Interstellar',
     'Inception',
@@ -40,8 +41,10 @@ class HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      MovieDetailsPage(movieTitle: titles[index]),
+                  builder: (context) => MovieDetailsPage(
+                      title: titles[index],
+                      imageUrl:
+                          'https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p7825626_p_v8_af.jpg'),
                 ),
               );
             },
@@ -88,23 +91,6 @@ class HomePageState extends State<HomePage> {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class MovieDetailsPage extends StatelessWidget {
-  final String movieTitle;
-  const MovieDetailsPage({super.key, required this.movieTitle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(movieTitle),
-      ),
-      body: Center(
-        child: Text('Details of $movieTitle'),
       ),
     );
   }

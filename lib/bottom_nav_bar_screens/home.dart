@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../home_page/home_page.dart';
+import '../home_page/movie_list_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -77,7 +77,7 @@ class HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          HomePage(title: _bodyText),
+          const MovieListPage(),
         ],
       ),
     );
