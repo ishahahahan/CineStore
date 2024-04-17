@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class MovieDetailsPage extends StatelessWidget {
   final String movieId;
@@ -22,8 +23,7 @@ class MovieDetailsPage extends StatelessWidget {
             .eq('movieid', movieId)
             .single()
             .asStream(),
-        builder: (context, snapshot) {
-          print("Hello");
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -37,6 +37,10 @@ class MovieDetailsPage extends StatelessWidget {
           }
 
           final movieData = snapshot.data!;
+
+          double currentRating = movieData['rating'] / 2 ?? 0.0;
+
+          print(currentRating * 2);
 
           return SingleChildScrollView(
             child: Column(
@@ -116,23 +120,41 @@ class MovieDetailsPage extends StatelessWidget {
                 const SizedBox(height: 16.0),
 
                 // Movie Rating Section
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Rate this movie',
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 8.0),
-                      // TODO: Add rating stars here
-                      // You can use a package like flutter_rating_bar for rating stars
-                      // Example: RatingBar.builder(...)
-
+                      const SizedBox(height: 8.0),
+                      RatingBar.builder(
+                        initialRating: currentRating,
+                        minRating: 0,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 30.0,
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating) {
+                          // Calculate new rating and update in the database
+                          double newRating =
+                              ((movieData['rating'] * 100 + rating * 2.0) /
+                                  100);
+                          print(newRating);
+                          updateRating(newRating);
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -153,5 +175,15 @@ class MovieDetailsPage extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void updateRating(double newRating) async {
+    // Construct the update query
+    final response = await supabase
+        .from('movies')
+        .update({'rating': newRating}).eq('movieid', movieId);
+
+    // Check if the update was successful
+    print(response);
   }
 }
