@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 import '../screens/movie_details.dart';
 
 class MovieListPage extends StatefulWidget {
-  // final String? title;
   const MovieListPage({super.key});
 
   @override
@@ -10,18 +10,35 @@ class MovieListPage extends StatefulWidget {
 }
 
 class MovieListPageState extends State<MovieListPage> {
-  final titles = [
-    'Interstellar',
-    'Inception',
-    'The Dark Knight',
-    'The Prestige',
-    'Memento',
-    'Dunkirk',
-    'Tenet',
-    'Batman Begins',
-    'Oppenheimer',
-    'The Dark Knight Rises'
-  ];
+  late List<Map<String, dynamic>> movies = [];
+  bool _isMounted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isMounted = true;
+    fetchMovies();
+  }
+
+  @override
+  void dispose() {
+    _isMounted = false;
+    super.dispose();
+  }
+
+  Future<void> fetchMovies() async {
+    final response =
+        await supabase.from('movies').select('movieid, title, imageurl');
+    // if (response.error != null) {
+    //   // Handle error
+    //   return;
+    // }
+    if (_isMounted) {
+      setState(() {
+        movies = response;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +50,21 @@ class MovieListPageState extends State<MovieListPage> {
           mainAxisSpacing: 10,
         ),
         shrinkWrap: true,
-        itemCount: titles.length,
+        itemCount: movies.length,
         itemBuilder: (context, index) {
+          final movie = movies[index];
           return GestureDetector(
             onTap: () {
-              // Navigate to movie details page
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MovieDetailsPage(
-                      title: titles[index],
-                      imageUrl:
-                          'https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p7825626_p_v8_af.jpg'),
-                ),
-              );
+              if (_isMounted) {
+                // Navigate to movie details page with movie ID
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        MovieDetailsPage(movieId: movie['movieid'].toString()),
+                  ),
+                );
+              }
             },
             child: Container(
               decoration: const BoxDecoration(
@@ -68,7 +86,7 @@ class MovieListPageState extends State<MovieListPage> {
                         bottomLeft: Radius.elliptical(10, 8.5),
                       ),
                       child: Image.network(
-                        'https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p7825626_p_v8_af.jpg',
+                        movie['imageurl'] ?? '',
                         fit: BoxFit.cover,
                         loadingBuilder: (context, child, loadingProgress) =>
                             loadingProgress == null
@@ -81,7 +99,7 @@ class MovieListPageState extends State<MovieListPage> {
                   ),
                   const SizedBox(height: 2.5),
                   Text(
-                    titles[index],
+                    movie['title'] ?? '',
                     style: const TextStyle(
                       fontSize: 12,
                     ),
