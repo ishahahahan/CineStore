@@ -149,8 +149,7 @@ class MovieDetailsPage extends StatelessWidget {
                         onRatingUpdate: (rating) {
                           // Calculate new rating and update in the database
                           double newRating =
-                              ((movieData['rating'] * 100 + rating * 2.0) /
-                                  100);
+                              ((movieData['rating'] + rating * 2.0) / 2);
                           print(newRating);
                           updateRating(newRating);
                         },
@@ -179,11 +178,9 @@ class MovieDetailsPage extends StatelessWidget {
 
   void updateRating(double newRating) async {
     // Construct the update query
-    final response = await supabase
+    await supabase
         .from('movies')
-        .update({'rating': newRating}).eq('movieid', movieId);
-
-    // Check if the update was successful
-    print(response);
+        .update({'rating': newRating})
+        .eq('movieid', movieId);
   }
 }

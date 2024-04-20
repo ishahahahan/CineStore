@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imdb/home_page/movie_list_page.dart';
+import 'package:imdb/main.dart';
 
 class BookmarksScreen extends StatefulWidget {
   const BookmarksScreen({super.key});
@@ -9,21 +10,17 @@ class BookmarksScreen extends StatefulWidget {
 }
 
 class BookmarksScreenState extends State<BookmarksScreen> {
-  final titles = [
-    'Interstellar',
-    'Inception',
-    'The Dark Knight',
-    'The Prestige',
-    'Memento',
-    'Dunkirk',
-    'Tenet',
-    'Batman Begins',
-    'Oppenheimer',
-    'The Dark Knight Rises'
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return const MovieListPage();
+    return MovieListPage(
+      movies: fetchBookmarks(),
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> fetchBookmarks() async {
+    final response =
+        await supabase.from('movies').select().order('title', ascending: true);
+
+    return response;
   }
 }

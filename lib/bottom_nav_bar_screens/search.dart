@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imdb/home_page/movie_list_page.dart';
+import 'package:imdb/main.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -17,7 +18,7 @@ class SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: TextField(
-          onChanged: (value) {
+          onSubmitted: (value) {
             setState(() {
               _searchText = value;
             });
@@ -38,8 +39,15 @@ class SearchScreenState extends State<SearchScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
               )
-            : const MovieListPage(),
+            :  MovieListPage(movies: fetchSearchResults(_searchText),),
       ),
     );
+  }
+
+  Future<List<Map<String, dynamic>>> fetchSearchResults(String query) async {
+    final response =
+        await supabase.from('movies').select().textSearch('title', query);
+
+    return response;
   }
 }
