@@ -5,6 +5,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import '../bottom_nav_bar_screens/bookmarks.dart';
 import '../bottom_nav_bar_screens/home.dart';
 import '../bottom_nav_bar_screens/search.dart';
+import '../bottom_nav_bar_screens/community_chat.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -21,7 +22,8 @@ class MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const SearchScreen(),
-    const BookmarksScreen()
+    const BookmarksScreen(),
+    const ChatScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -74,6 +76,10 @@ class MainScreenState extends State<MainScreen> {
               title: const Text('Watchlist'),
               selectedColor: const Color(0xff4055C6),
             ),
+            SalomonBottomBarItem(
+                icon: const Icon(Icons.chat),
+                title: const Text('Chat'),
+                selectedColor: const Color(0xff4055C6)),
           ],
         ),
         body: _screens[_currentIndex],
