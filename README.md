@@ -9,8 +9,8 @@ CineStore is a mobile application for browsing and adding movies to their person
 - **Search**: Easily find movies using the search feature.
 - **User Authentication**: Securely log in or sign up to access personalized features.
 - **Favorites**: Add movies to your favorites list for quick access.
-- **Rating**:
-- **Community Chat**:
+- **Rating**: Rate movies and share your reviews with the community.
+- **Community Chat**: Engage in discussions with other users and cinephiles in the community chat feature.
 
 ## Technologies Used
 
