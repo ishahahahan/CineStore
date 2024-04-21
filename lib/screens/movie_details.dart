@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../main.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -39,8 +40,6 @@ class MovieDetailsPage extends StatelessWidget {
           final movieData = snapshot.data!;
 
           double currentRating = movieData['rating'] / 2 ?? 0.0;
-
-          print(currentRating * 2);
 
           return SingleChildScrollView(
             child: Column(
@@ -150,7 +149,6 @@ class MovieDetailsPage extends StatelessWidget {
                           // Calculate new rating and update in the database
                           double newRating =
                               ((movieData['rating'] + rating * 2.0) / 2);
-                          print(newRating);
                           updateRating(newRating);
                         },
                       ),
@@ -164,12 +162,26 @@ class MovieDetailsPage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           // Add movie to watchlist
           // You can implement the logic here to add the movie to the watchlist
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Added to watchlist')),
-          );
+          try {
+            await supabase.from('watchlist').insert({
+              'user_id': supabase.auth.currentUser!.id,
+              'movieid': movieId,
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Added to watchlist')),
+            );
+          } on PostgrestException catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(e.message)),
+            );
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(e.toString())),
+            );
+          }
         },
         child: const Icon(Icons.add),
       ),
@@ -180,7 +192,6 @@ class MovieDetailsPage extends StatelessWidget {
     // Construct the update query
     await supabase
         .from('movies')
-        .update({'rating': newRating})
-        .eq('movieid', movieId);
+        .update({'rating': newRating}).eq('movieid', movieId);
   }
 }

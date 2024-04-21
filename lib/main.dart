@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imdb/screens/main_screen.dart';
+import 'package:imdb/screens/profile.dart';
 import 'package:imdb/screens/splash_screen.dart';
 import 'auth/welcome.dart';
 import 'auth/login.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
           LoginScreen.id: (context) => const LoginScreen(),
           SignUpScreen.id: (context) => const SignUpScreen(),
           MainScreen.id: (context) => const MainScreen(),
+          ProfilePage.id: (context) => const ProfilePage(),
         });
   }
 }

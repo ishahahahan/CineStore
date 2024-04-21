@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:imdb/auth/welcome.dart';
-import 'package:imdb/main.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import '../bottom_nav_bar_screens/bookmarks.dart';
 import '../bottom_nav_bar_screens/home.dart';
 import '../bottom_nav_bar_screens/search.dart';
 import '../bottom_nav_bar_screens/community_chat.dart';
+import 'profile.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -38,19 +37,18 @@ class MainScreenState extends State<MainScreen> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Text(
-            'IMDb',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          title: const CircleAvatar(
+            backgroundImage: AssetImage('logo/logo2.png'),
+            radius: 40,
+            backgroundColor: Colors.transparent,
           ),
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
                 onPressed: () async {
-                  // Sign Out
-                  await supabase.auth.signOut();
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, WelcomeScreen.id, (route) => false);
+                  // Profile page
+                  Navigator.pushNamed(context, ProfilePage.id);
                 },
                 icon: const Icon(Icons.account_circle, size: 35),
               ),

@@ -37,8 +37,13 @@ class WelcomeScreenState extends State<WelcomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const CircleAvatar(
+                backgroundImage: AssetImage('logo/logo.png'),
+                radius: 100,
+                backgroundColor: Colors.transparent,
+              ),
               const Text(
-                'IMDb',
+                'CineStore',
                 style: TextStyle(
                   fontSize: 50,
                   fontWeight: FontWeight.bold,
