@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 import '../screens/movie_details.dart';
 
 class MovieListPage extends StatefulWidget {
   final int? sortType;
+  final bool? isBookmark;
   final Future<List<Map<String, dynamic>>> movies;
-  const MovieListPage({super.key, this.sortType, required this.movies});
+  const MovieListPage(
+      {super.key,
+      this.sortType,
+      this.isBookmark = false,
+      required this.movies});
 
   @override
   MovieListPageState createState() => MovieListPageState();
@@ -21,7 +27,6 @@ class MovieListPageState extends State<MovieListPage> {
     super.initState();
     _isMounted = true;
     choice = widget.sortType ?? 0;
-    // fetchMovies(choice);
   }
 
   @override
@@ -35,25 +40,8 @@ class MovieListPageState extends State<MovieListPage> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.sortType != widget.sortType) {
       choice = widget.sortType ?? 0;
-      // fetchMovies(choice);
     }
   }
-
-  // Future<void> fetchMovies(int choice) async {
-  //   switch (choice) {
-  //     case 0:
-  //       await fetchRecentlyReleasedMovies();
-  //       break;
-  //     case 1:
-  //       await fetchPopularMovies();
-  //       break;
-  //     case 2:
-  //       await fetchTopRatedMovies();
-  //       break;
-  //     default:
-  //       await fetchRecentlyReleasedMovies();
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +76,38 @@ class MovieListPageState extends State<MovieListPage> {
               final movie = movies[index];
               print(movie);
               return GestureDetector(
+                onLongPress: () {
+                  if (widget.isBookmark == true) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Add to watched list?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                // Update the state to remove the movie from the list
+                                setState(() {
+                                  movies.removeAt(index);
+                                  // add the movie to the watched table
+                                  addMovieToWatched(movie['movieid'] as int);
+                                });
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Add'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
                 onTap: () {
                   if (_isMounted) {
                     Navigator.push(
@@ -149,4 +169,24 @@ class MovieListPageState extends State<MovieListPage> {
       },
     );
   }
+Future<void> addMovieToWatched(int movieId) async {
+  final userId = supabase.auth.currentUser?.id;
+  if (userId == null) {
+    // Handle case where user ID is null (e.g., user not authenticated)
+    print('User ID is null. Cannot add movie to watched list.');
+    return;
+  }
+  
+  try {
+    // Add the movie to the watched table
+    await supabase.from('watched').insert({
+      'movieid': movieId,
+      'user_id': userId, // Ensure user ID is passed to the insert operation
+    });
+  } catch (e) {
+    // Handle any errors that occur during the insert operation
+    print('Error adding movie to watched list: $e');
+  }
+}
+
 }

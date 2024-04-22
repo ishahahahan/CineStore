@@ -37,7 +37,7 @@ class ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: null,
-        title: const Text('Chat'),
+        title: const Text('Community Chat'),
       ),
       body: SafeArea(
         child: Column(

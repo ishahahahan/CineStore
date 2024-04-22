@@ -37,10 +37,22 @@ class MainScreenState extends State<MainScreen> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const CircleAvatar(
-            backgroundImage: AssetImage('logo/logo2.png'),
-            radius: 40,
-            backgroundColor: Colors.transparent,
+          title: const Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage('logo/logo2.png'),
+                radius: 40,
+                backgroundColor: Colors.transparent,
+              ),
+              Text(
+                'CineStore',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
           ),
           actions: [
             Padding(

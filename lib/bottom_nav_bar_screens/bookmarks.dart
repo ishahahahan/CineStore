@@ -15,7 +15,6 @@ class BookmarksScreenState extends State<BookmarksScreen> {
   @override
   void initState() {
     super.initState();
-    print('ssup');
     _bookmarksFuture = fetchBookmarks();
   }
 
@@ -37,7 +36,27 @@ class BookmarksScreenState extends State<BookmarksScreen> {
             child: Text('Add movies to your watchlist'),
           );
         } else {
-          return MovieListPage(movies: _bookmarksFuture);
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Watchlist',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  MovieListPage(
+                    movies: _bookmarksFuture,
+                    isBookmark: true,
+                  ),
+                ],
+              ),
+            ),
+          );
         }
       },
     );
@@ -53,10 +72,23 @@ class BookmarksScreenState extends State<BookmarksScreen> {
     try {
       final response = await supabase
           .from('watchlist')
-          .select('*, movies(*)')
+          .select('movieid, movies(title, imageurl)')
           .eq('user_id', currentUser.id);
 
-      return response;
+      final List<Map<String, dynamic>> bookmarks = [];
+
+      for (final item in response) {
+        final Map<String, dynamic> bookmark = {
+          'movieid': item['movieid'],
+          'title': item['movies']['title'],
+          'imageurl': item['movies']['imageurl'],
+        };
+        bookmarks.add(bookmark);
+      }
+
+      print(bookmarks);
+
+      return bookmarks;
     } catch (e) {
       print(e);
       throw Exception('Failed to fetch bookmarks: $e');
