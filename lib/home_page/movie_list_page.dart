@@ -74,7 +74,6 @@ class MovieListPageState extends State<MovieListPage> {
             itemCount: itemCount,
             itemBuilder: (context, index) {
               final movie = movies[index];
-              print(movie);
               return GestureDetector(
                 onLongPress: () {
                   if (widget.isBookmark == true) {
@@ -169,24 +168,34 @@ class MovieListPageState extends State<MovieListPage> {
       },
     );
   }
-Future<void> addMovieToWatched(int movieId) async {
-  final userId = supabase.auth.currentUser?.id;
-  if (userId == null) {
-    // Handle case where user ID is null (e.g., user not authenticated)
-    print('User ID is null. Cannot add movie to watched list.');
-    return;
-  }
-  
-  try {
-    // Add the movie to the watched table
-    await supabase.from('watched').insert({
-      'movieid': movieId,
-      'user_id': userId, // Ensure user ID is passed to the insert operation
-    });
-  } catch (e) {
-    // Handle any errors that occur during the insert operation
-    print('Error adding movie to watched list: $e');
-  }
-}
 
+  Future<void> addMovieToWatched(int movieId) async {
+    final userId = supabase.auth.currentUser?.id;
+    if (userId == null) {
+      // Handle case where user ID is null (e.g., user not authenticated)
+      // snackbar or dialog to inform user to log in
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please log in to add movies to your watched list'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      // Add the movie to the watched table
+      await supabase.from('watched').insert({
+        'movieid': movieId,
+        'user_id': userId, // Ensure user ID is passed to the insert operation
+      });
+    } catch (e) {
+      // Handle any errors that occur during the insert operation
+      // snackbar or dialog to inform user of the error
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('An error occurred. Please try again.'),
+        ),
+      );
+    }
+  }
 }

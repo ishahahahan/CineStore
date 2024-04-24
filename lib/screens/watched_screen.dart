@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:imdb/home_page/movie_list_page.dart';
 import 'package:imdb/main.dart';
 
-class BookmarksScreen extends StatefulWidget {
-  const BookmarksScreen({super.key, Key? customKey});
+class WatchedMoviesScreen extends StatefulWidget {
+  const WatchedMoviesScreen({super.key});
 
   @override
-  BookmarksScreenState createState() => BookmarksScreenState();
+  _WatchedMoviesScreenState createState() => _WatchedMoviesScreenState();
 }
 
-class BookmarksScreenState extends State<BookmarksScreen> {
-  late Future<List<Map<String, dynamic>>> _bookmarksFuture;
+class _WatchedMoviesScreenState extends State<WatchedMoviesScreen> {
+  late Future<List<Map<String, dynamic>>> _watchedMoviesFuture;
 
   @override
   void initState() {
     super.initState();
-    _bookmarksFuture = fetchBookmarks();
+    _watchedMoviesFuture = fetchWatchedMovies();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: _bookmarksFuture,
+      future: _watchedMoviesFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -33,25 +33,27 @@ class BookmarksScreenState extends State<BookmarksScreen> {
           );
         } else if (snapshot.data == null || snapshot.data!.isEmpty) {
           return const Center(
-            child: Text('Add movies to your watchlist'),
+            child: Text('You haven\'t watched any movies yet'),
           );
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Watchlist',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  )),
+              title: const Text(
+                'Watched Movies',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             body: SafeArea(
               child: Column(
                 children: [
                   const SizedBox(height: 20),
                   MovieListPage(
-                    movies: _bookmarksFuture,
-                    isBookmark: true,
+                    movies: _watchedMoviesFuture,
+                    isBookmark: false,
                   ),
                 ],
               ),
@@ -62,7 +64,7 @@ class BookmarksScreenState extends State<BookmarksScreen> {
     );
   }
 
-  Future<List<Map<String, dynamic>>> fetchBookmarks() async {
+  Future<List<Map<String, dynamic>>> fetchWatchedMovies() async {
     final currentUser = supabase.auth.currentUser;
     if (currentUser == null) {
       throw Exception('User not authenticated');
@@ -70,25 +72,24 @@ class BookmarksScreenState extends State<BookmarksScreen> {
 
     try {
       final response = await supabase
-          .from('watchlist')
+          .from('watched')
           .select('movieid, movies(title, imageurl)')
           .eq('user_id', currentUser.id);
 
-      final List<Map<String, dynamic>> bookmarks = [];
+      final List<Map<String, dynamic>> watchedMovies = [];
 
       for (final item in response) {
-        final Map<String, dynamic> bookmark = {
+        final Map<String, dynamic> watchedMovie = {
           'movieid': item['movieid'],
           'title': item['movies']['title'],
           'imageurl': item['movies']['imageurl'],
         };
-        bookmarks.add(bookmark);
+        watchedMovies.add(watchedMovie);
       }
 
-
-      return bookmarks;
+      return watchedMovies;
     } catch (e) {
-      throw Exception('Failed to fetch bookmarks: $e');
+      throw Exception('Failed to fetch watched movies: $e');
     }
   }
 }
